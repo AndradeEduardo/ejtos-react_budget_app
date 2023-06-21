@@ -58,9 +58,19 @@ export const AppReducer = (state, action) => {
                 budget
             };
         case 'SET_BUDGET':
+            const totalExpenses = state.expenses.reduce((total, item) => {
+                return (total += item.cost);
+            }, 0);
+            console.log(totalExpenses)
             action.type = "DONE";
-            state.budget = action.payload;
-
+            if (action.payload < totalExpenses) {
+                alert("You cannot reduce the budget value to lower than the expenses!!")
+            } else if (action.payload <= 20000) {
+                state.budget = action.payload;
+            }
+            else {
+                alert("Cannot increase Budget! Budget limitis " + state.currency + "20.000")
+            }
             return {
                 ...state,
             };
